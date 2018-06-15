@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.map.MapView;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -338,9 +339,11 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     public void playSound(Location location, String sound, SoundCategory category, float volume, float pitch);
 
     /**
-     * Stop the specified sound from playing.
+     * 停止播放某个指定的声音.
+     * <p>
+     * 原文:Stop the specified sound from playing.
      *
-     * @param sound the sound to stop
+     * @param sound 指定声音
      */
     public void stopSound(Sound sound);
 
@@ -356,7 +359,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * Stop the specified sound from playing.
      *
      * @param sound the sound to stop
-     * @param category the category of the sound
+     * @param category 声音类别
      */
     public void stopSound(Sound sound, SoundCategory category);
 
@@ -520,7 +523,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param achievement 要移除的成就
      * @throws IllegalArgumentException 当成就为null时抛出.
-     * @deprecated 未来版本的Minecraft将不会有成就(取而代之的是进度).
+     * @deprecated 未来的Minecraft将不会有成就(取而代之的是进度).
      */
     @Deprecated
     public void removeAchievement(Achievement achievement);
@@ -939,7 +942,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     public void setLevel(int level);
 
     /**
-     * 得到总共的经验值(等级和经验).
+     * 得到玩家总共获得了多少经验(等级和经验).
      * <br>
      * 这个数值指玩家随着时间的推移收集的全部经验，并只在玩家死亡时显示为玩家的"得分".
      * <p>
@@ -953,10 +956,17 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     public int getTotalExperience();
 
     /**
-     * 设置总共的经验值. <p>
-     * 原文:Sets the players current experience level
+     * 设置玩家的总经验值(等级和经验).
+     * <br>
+     * 这个数值指玩家随着时间的推移收集的全部经验，并只在玩家死亡时显示为玩家的"得分".
+     * <p>
+     * 原文:
+     * Sets the players current experience points.
+     * <br>
+     * This refers to the total amount of experience the player has collected
+     * over time and is only displayed as the player's "score" upon dying.
      *
-     * @param exp 新的玩家总经验
+     * @param exp 总经验值
      */
     public void setTotalExperience(int exp);
 
@@ -1075,16 +1085,43 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * 原文:Hides a player from this player
      *
      * @param player 要让该玩家看不见的玩家.
+     * @deprecated 另请参阅 {@link #hidePlayer(Plugin, Player)}
      */
+    @Deprecated
     public void hidePlayer(Player player);
+
+    /**
+     * 让该玩家看不见某玩家.
+     * <p>
+     * 原文:Hides a player from this player
+     *
+     * @param plugin Plugin 要隐藏该玩家的插件
+     * @param player Player 要让该玩家看不见的玩家.
+     */
+    public void hidePlayer(Plugin plugin, Player player);
 
     /**
      * 让该玩家能看到某玩家. <p>
      * 原文:Allows this player to see a player that was previously hidden
      *
      * @param player 要让该玩家看得见的玩家.
+     * @deprecated 另请参阅 {@link #showPlayer(Plugin, Player)}
      */
+    @Deprecated
     public void showPlayer(Player player);
+
+    /**
+     * 让该玩家能看到之前被隐藏的玩家. 如果另一个插件也隐藏了这个玩家,
+     * 那么玩家将继续处于隐藏状态直至其他插件也调用了此方法.
+     * <p>
+     * 原文:Allows this player to see a player that was previously hidden. If
+     * another another plugin had hidden the player too, then the player will
+     * remain hidden until the other plugin calls this method too.
+     *
+     * @param plugin Plugin 要使某玩家现身的插件
+     * @param player Player 使某玩家现身
+     */
+    public void showPlayer(Plugin plugin, Player player);
 
     /**
      * 检查该玩家是否能看到某玩家. <p>
